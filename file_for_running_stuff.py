@@ -1,6 +1,6 @@
 import reading_from_file
-#from time_series import persistence_test, neural_network, lstm_rnn
-from time_series import svr, knn_improved
+from time_series import persistence_test, neural_network, lstm_rnn
+#from time_series import svr, knn_improved
 import csv
 
 
@@ -92,7 +92,7 @@ def test_knn_time_new():
 
 
 #test_knn_time_new()
-#test_persistnece_time()
+test_persistnece_time()
 #test_nn_time()
 #run_rnn_time()
-run_svr()
+#run_svr()
