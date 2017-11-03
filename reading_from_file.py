@@ -1,4 +1,5 @@
 import csv
+import numpy as np
 
 ws = []
 deg = []
@@ -75,9 +76,6 @@ def read_from_file_time_series2(file_name, window_size_input, window_size_output
                 previous_values.append(float(row[5]))
 
 
-
-
-
 def read_from_file_time_series3(file_name, window_size_input, window_size_output):
     global time_series_power_input_train, time_series_power_output_train, time_series_power_input_test, time_series_power_output_test, test_data_part
     with open(file_name) as csvfile:
@@ -122,13 +120,14 @@ def read_from_file():
 
 def read_from_file_time_series(window_size_input, window_size_output):
     read_from_file_time_series2('test_files/61559-2007.csv', window_size_input, window_size_output)
-    #read_from_file_time_series2('test_files/61559-2008.csv', window_size_input, window_size_output)
-    #read_from_file_time_series2('test_files/61559-2009.csv', window_size_input, window_size_output)
+    read_from_file_time_series2('test_files/61559-2008.csv', window_size_input, window_size_output)
+    read_from_file_time_series2('test_files/61559-2009.csv', window_size_input, window_size_output)
     #read_from_file_time_series2('test_files/61559-2010.csv', window_size_input, window_size_output)
 
 
 def read_from_file_time_series_norwegian(window_size_input, window_size_output):
-    read_from_file_time_series3('test_files/Aasen_II.csv', window_size_input, window_size_output)
+    #read_from_file_time_series3('test_files/Aasen_II.csv', window_size_input, window_size_output)
+    read_from_file_time_series3('test_files/Andoya.csv', window_size_input, window_size_output)
 
 ws2 = ws[::2].copy()
 deg2 = deg[::2].copy()
@@ -219,6 +218,38 @@ def get_test_input2():
 
 def get_full_training_data_set():
     return ws, deg, power
+
+
+def normalize_time_series():
+    global time_series_power_input_train, time_series_power_output_train, time_series_power_input_test, time_series_power_output_test
+    max_value1 = np.amax(time_series_power_input_train)
+    max_value2 = np.amax(time_series_power_output_train)
+    max_value3 = np.amax(time_series_power_input_test)
+    max_value4 = np.amax(time_series_power_output_test)
+
+    max_value = np.amax([max_value1, max_value2, max_value3, max_value4])
+
+    print("Max value:" , max_value)
+
+    time_series_power_output_test = np.array(time_series_power_output_test) / max_value
+    time_series_power_input_test = np.array(time_series_power_input_test) / max_value
+    time_series_power_input_train = np.array(time_series_power_input_train) / max_value
+    time_series_power_output_train = np.array(time_series_power_output_train) / max_value
+
+    '''
+    newList = []
+    for i in range(0, len(time_series_power_output_test)):
+        temp_list = []
+        for j in range(len(time_series_power_output_test[0])):
+            temp_list.append(time_series_power_output_test[i][j] / max_value)
+        newList.append(temp_list)
+    time_series_power_output_test = newList
+    '''
+
+
+
+
+
 
 #ws_te = ws[3::4].copy()
 #deg_te = deg[3::4].copy()

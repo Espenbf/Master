@@ -24,6 +24,7 @@ class NN:
         self.y = tf.placeholder('float', [None, nr_out])
         #reading_from_file.read_from_file_time_series(self.n_nodes_input, self.n_nodes_output)
         reading_from_file.read_from_file_time_series_norwegian(self.n_nodes_input, self.n_nodes_output)
+        reading_from_file.normalize_time_series()
 
         self.batch_size = reading_from_file.get_test_data_size_time_series()
 
@@ -33,7 +34,7 @@ class NN:
     n_nodes_hl3 = 2000
 
 
-    hm_epochs = 30
+    hm_epochs = 15
 
 
 
@@ -91,8 +92,6 @@ class NN:
                 reading_from_file.reset_counter()
 
                 print ('Epoch', epoch, 'completed out of' , self.hm_epochs, 'average loss', epoch_loss/total_batch)
-                if (epoch_loss/total_batch) < 0.4:
-                    break
 
             print (self.n_nodes_output)
             correct = tf.reduce_mean(tf.squared_difference(prediction, self.y), 0)

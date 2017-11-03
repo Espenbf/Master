@@ -4,43 +4,37 @@ from sklearn.metrics import mean_squared_error
 
 def predict_stuff(input_values, output_values, test_input, test_output):
 
+    columns = list(zip(*output_values))
+    output_values = columns[0]
 
-    max_value = np.amax(input_values)
     output_values = np.reshape(output_values, len(output_values))
-    output_values = output_values / max_value
-    input_values = input_values / max_value
-    #print (input_values)
-    #print (output_values)
 
 
 
     svr_rbf = SVR(kernel= 'rbf', C=1e3)
-    #svr_rbf.fit(input_values, output_values)
+    svr_rbf.fit(input_values, output_values)
 
-    #svr_poly = SVR(kernel='poly', C=1e3)
-    #svr_poly.fit(input_values, output_values)
+    test_out_column = list(zip(*test_output))
 
-    svr_lin = SVR(kernel='linear', C=1e3)
-    svr_lin.fit(input_values, output_values)
 
-    test_input = test_input / max_value
-    test_output = test_output / max_value
 
-    #prediction1 = svr_rbf.predict(test_input)
-    #prediction2 = svr_poly.predict(test_input)
-    prediction3 = svr_lin.predict(test_input)
-    
-    #result_rbf = mean_squared_error(prediction1, test_output, multioutput='raw_values')
-    #result2_rbf = max_value*result_rbf
-    
-    #result_poly = mean_squared_error(prediction2, test_output, multioutput='raw_values')
-    #result2_poly = max_value*result_poly
 
-    result_lin = mean_squared_error(prediction3, test_output, multioutput='raw_values')
-    result2_lin = max_value * result_lin
+    prediction = svr_rbf.predict(test_input)
+    results = [prediction]
+    results_mse = [mean_squared_error(prediction, test_out_column[0], multioutput='raw_values')[0]]
+    test_input_temp = test_input
 
-    #print(result2_rbf)
-    #print(result2_poly)
-    print(result2_lin)
-    return result2_lin
+
+    for i in range(0, len(test_out_column) - 1):
+        columns = list(zip(*test_input_temp))
+        columns.append(prediction)
+        columns.pop(0)
+
+        test_input_temp = list(zip(*columns))
+        prediction = svr_rbf.predict(test_input_temp)
+        results.append(prediction)
+        results_mse.append(mean_squared_error(prediction, test_out_column[i+1], multioutput='raw_values')[0])
+    print (results_mse)
+
+    return results_mse
 

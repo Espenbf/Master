@@ -75,11 +75,36 @@ def long_time_series_all():
     plt.show()
 
 
-def norwegian_time_series_all():
-    nn = [10321.2, 17822.3, 24816.7, 31249.1, 38061.8]
-    per = [10931.7215416,19383.6466301,27697.115728,35523.3862101,43906.0999986]
-    k14 = [10711.4933709,18283.1805697,25373.8469133,32103.7323014,38998.2850586]
-    k5 = [11881.3536744,20338.1043711,28100.4679799,35952.4499161,43657.2129868]
+def norwegian_time_series_all_aasen():
+    nn = [0.015614,0.0268241,0.0371039,0.0467627,0.0566584]
+    per = [0.0166616697785,0.0295437381955,0.0422147778205,0.0541432498248,0.0669198292921]
+    svr = [0.0176347231328,0.0304374112519,0.0425360860365,0.0537606034365,0.0653104991418]
+
+    k14 = [0.0162918091859,0.0277749635449,0.0384906456659,0.0486985391246,0.0592049584812]
+    k5 = [0.0176420104467,0.030185381289,0.0418498548196,0.0533686068244,0.0648820883534]
+    k30 = [0.0158593889316,0.0271024119702,0.0376306029718,0.0473603160895,0.057452947102]
+
+    values = [1, 2, 3, 4, 5]
+    plt.ylabel('Mean Squared Error')
+    plt.xlabel('Prediction')
+
+    plt.plot(values, k5, color='red', label='K5')
+    plt.plot(values, k14, color='blue', label='K14')
+    plt.plot(values, k30, color='black', label='k30')
+    plt.plot(values, nn, color='yellow', label='NN')
+    plt.plot(values, per, color='green', label='Per')
+    plt.plot(values, svr, color='fuchsia', label='SVR')
+    plt.title('Compare')
+    plt.legend()
+    plt.show()
+
+
+def norwegian_time_series_all_Andoya():
+    nn = [0.0143845,0.024571,0.0328666,0.039973,0.0464613]
+    per = [0.0153762458143,0.027033603417,0.0370567479007,0.0458954063983,0.0545424587172]
+    k14 = [0.0163254595633,0.0278635679251,0.0386719135719,0.0489266649727,0.0594368044843]
+    k5 = [0.0181080569971,0.0309965552066,0.0428294894937,0.0547966213161,0.0665416087834]
+    k30 = [0.0158593889316,0.0271024119702,0.0376306029718,0.0473603160895,0.057452947102]
 
     values = [1, 2, 3, 4, 5]
     plt.ylabel('Mean Squared Error')
@@ -89,6 +114,8 @@ def norwegian_time_series_all():
     plt.plot(values, k14, color='blue', label='K14')
     plt.plot(values, nn, color='yellow', label='NN')
     plt.plot(values, per, color='green', label='Per')
+    plt.plot(values, k30, color='black', label='k30')
+
     plt.title('Compare')
     plt.legend()
     plt.show()
@@ -99,6 +126,7 @@ def norwegian_time_series_all():
 #plot_knn_short()
 #plot_short_time_series_all()
 #long_time_series_all()
-norwegian_time_series_all()
+#norwegian_time_series_all_aasen()
+norwegian_time_series_all_Andoya()
 
 
