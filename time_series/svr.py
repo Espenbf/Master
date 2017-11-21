@@ -21,6 +21,7 @@ def predict_stuff(input_values, output_values, test_input, test_output):
 
     prediction = svr_rbf.predict(test_input)
     results = [prediction]
+
     results_mse = [mean_squared_error(prediction, test_out_column[0], multioutput='raw_values')[0]]
     test_input_temp = test_input
 

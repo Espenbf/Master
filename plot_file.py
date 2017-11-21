@@ -62,6 +62,8 @@ def long_time_series_all():
     k9 = [0.0547852590079, 0.195611670346, 0.386172365675, 0.616426796375, 0.864786746519]
     k14 = [0.0555893360662,0.195246657743,0.384464906002,0.609682036247,0.849917550943]
 
+
+
     values = [1, 2, 3, 4, 5]
     plt.ylabel('Mean Squared Error')
     plt.xlabel('Prediction')
@@ -84,27 +86,9 @@ def norwegian_time_series_all_aasen():
     k5 = [0.0176420104467,0.030185381289,0.0418498548196,0.0533686068244,0.0648820883534]
     k30 = [0.0158593889316,0.0271024119702,0.0376306029718,0.0473603160895,0.057452947102]
 
-    values = [1, 2, 3, 4, 5]
-    plt.ylabel('Mean Squared Error')
-    plt.xlabel('Prediction')
+    rnn_simple = [0.0176336904287,0.0282336420251,0.0395729133751,0.0494449058468,0.0583766876792]
+    lstm = [0.0255262803064,0.0343665593354,0.0462806256831,0.0581061246562,0.0706336012979]
 
-    plt.plot(values, k5, color='red', label='K5')
-    plt.plot(values, k14, color='blue', label='K14')
-    plt.plot(values, k30, color='black', label='k30')
-    plt.plot(values, nn, color='yellow', label='NN')
-    plt.plot(values, per, color='green', label='Per')
-    plt.plot(values, svr, color='fuchsia', label='SVR')
-    plt.title('Compare')
-    plt.legend()
-    plt.show()
-
-
-def norwegian_time_series_all_Andoya():
-    nn = [0.0143845,0.024571,0.0328666,0.039973,0.0464613]
-    per = [0.0153762458143,0.027033603417,0.0370567479007,0.0458954063983,0.0545424587172]
-    k14 = [0.0163254595633,0.0278635679251,0.0386719135719,0.0489266649727,0.0594368044843]
-    k5 = [0.0181080569971,0.0309965552066,0.0428294894937,0.0547966213161,0.0665416087834]
-    k30 = [0.0158593889316,0.0271024119702,0.0376306029718,0.0473603160895,0.057452947102]
 
     values = [1, 2, 3, 4, 5]
     plt.ylabel('Mean Squared Error')
@@ -115,18 +99,79 @@ def norwegian_time_series_all_Andoya():
     plt.plot(values, nn, color='yellow', label='NN')
     plt.plot(values, per, color='green', label='Per')
     plt.plot(values, k30, color='black', label='k30')
+    plt.plot(values, rnn_simple, label='rnn_simple')
+    plt.plot(values, lstm, color='cyan', label='lstm')
+    plt.plot(values, svr, color='purple', label='svr')
+
 
     plt.title('Compare')
     plt.legend()
     plt.show()
 
 
+def norwegian_time_series_all_Raggovidda():
+    nn = [0.0180995,0.0274104,0.0420119,0.0507118,0.0601649]
+    per = [0.0187659909234,0.0298562656185,0.0450754674824,0.0561400756569,0.0693630069015]
+    k14 = [0.0185138208668,0.0294095273901,0.0423355415422,0.0523102748262,0.0628235541952]
+    k5 = [0.0206022892895,0.0329989349885,0.0470744421019,0.0581387617386,0.0697775713606]
+    k30 = [0.0179174487004,0.0282054000672,0.040773773449,0.0502449703872,0.0605966122087]
+    rnn_simple = [0.0179169781295,0.0282373685315,0.0413144283817,0.0512363353834,0.0619029512078]
+    lstm = [0.0299569390828,0.0383666087955,0.0486957026094,0.0605777152601,0.0702483113742]
+
+    svr = []
+
+    values = [1, 2, 3, 4, 5]
+    plt.ylabel('Mean Squared Error')
+    plt.xlabel('Prediction')
+
+    plt.plot(values, k5, color='red', label='K5')
+    plt.plot(values, k14, color='blue', label='K14')
+    plt.plot(values, nn, color='yellow', label='NN')
+    plt.plot(values, per, color='green', label='Per')
+    plt.plot(values, k30, color='black', label='k30')
+    plt.plot(values, rnn_simple, label='rnn_simple')
+    plt.plot(values, lstm, color='cyan', label='lstm')
+    #plt.plot(values, svr, color='purple', label='svr')
+
+
+    plt.title('Compare')
+    plt.legend()
+    plt.show()
+
+
+def norwegian_time_series_all_bessaker():
+    nn = [0.0230361,0.0350711,0.0476716,0.059241,0.0642264]
+    per = [0.0248538088135,0.0387700016339,0.0535038640175,0.0652755267272,0.0757174687063]
+    k14 = [0.0237855993243,0.0359645420403,0.048227781452,0.0574092730725,0.0654647846258]
+    k5 = [0.026219753839,0.0402692008365,0.0537665855481,0.0643775683211,0.0733777163545]
+    k30 = [0.02296803321,0.0346057174893,0.046596847268,0.0552013968203,0.062866293122]
+    rnn_simple = [0.0227137146576,0.0344287472003,0.0467064087269,0.0561929689005,0.0649657673822]
+    lstm = [0.0312083961306,0.0381241212951,0.0504936855967,0.0650280420784,0.0743490079624]
+    svr = [0.0227628488427,0.0347349128561,0.0475516251118,0.0583552741015,0.0687677181348]
+
+    values = [1, 2, 3, 4, 5]
+    plt.ylabel('Mean Squared Error')
+    plt.xlabel('Prediction')
+
+    plt.plot(values, k5, color='red', label='K5')
+    plt.plot(values, k14, color='blue', label='K14')
+    plt.plot(values, nn, color='yellow', label='NN')
+    plt.plot(values, per, color='green', label='Per')
+    plt.plot(values, k30, color='black', label='k30')
+    plt.plot(values, rnn_simple, label='rnn_simple')
+    plt.plot(values, lstm, color='cyan', label='lstm')
+    plt.plot(values, svr, color='purple', label='svr')
+
+    plt.title('Compare')
+    plt.legend()
+    plt.show()
 
 
 #plot_knn_short()
 #plot_short_time_series_all()
 #long_time_series_all()
-#norwegian_time_series_all_aasen()
-norwegian_time_series_all_Andoya()
+norwegian_time_series_all_aasen()
+#norwegian_time_series_all_Raggovidda()
+#norwegian_time_series_all_bessaker()
 
 

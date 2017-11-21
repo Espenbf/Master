@@ -1,0 +1,131 @@
+'''
+input > weight > hidden layer 1(activation function) > weights > output layer
+
+compare output to predicted output > cost function (cross entropy)
+optimazation function (optimizer)  > mimize cost (AdamOptimizer, SGD, AdaGrad...)
+
+backpropagation
+
+feed forwar + backprogaation = epoch 
+
+'''
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
+import tensorflow as tf
+import reading_from_file
+import numpy as np
+from sklearn.metrics import mean_squared_error
+
+
+class RNN:
+    def __init__(self, nr_inp, nr_out):
+        self.n_nodes_input = nr_inp
+        self.n_noes_actial_out = nr_out
+        self.n_nodes_output = 1
+        self.x = tf.placeholder('float', [None, nr_inp])
+        self.y = tf.placeholder('float', [None, self.n_nodes_output])
+
+        reading_from_file.read_from_file_time_series_norwegian(self.n_nodes_input, self.n_noes_actial_out)
+        reading_from_file.normalize_time_series()
+        #self.batch_size = reading_from_file.get_test_data_size_time_series()
+        self.batch_size = 1000
+
+        self.train_outputs = reading_from_file.get_train_output_time_series()
+        lenght = (len(self.train_outputs))
+
+        self.columns = list(zip(*self.train_outputs))
+        self.output_values = self.columns[0]
+
+        self.output_values = np.asarray(self.output_values).reshape(lenght, 1)
+
+
+    learning_rate = 0.01
+    n_nodes_hl1 = 500
+    n_nodes_hl2 = 500
+
+    n_nodes_hl3 = 1000
+
+    hm_epochs = 5
+
+
+
+
+    def neural_network_model(self, data):
+
+        hidden_1_layer = {'weights': tf.Variable(tf.random_normal([self.n_nodes_input, self.n_nodes_hl1], 0, 0.1)),
+                          'biases': tf.Variable(tf.random_normal([self.n_nodes_hl1], 0, 0.1))}
+
+        hidden_2_layer = {'weights': tf.Variable(tf.random_normal([self.n_nodes_hl1, self.n_nodes_hl2], 0, 0.1)),
+                          'biases': tf.Variable(tf.random_normal([self.n_nodes_hl2], 0, 0.1))}
+
+        hidden_3_layer = {'weights': tf.Variable(tf.random_normal([self.n_nodes_hl2, self.n_nodes_hl2], 0, 0.1)),
+                          'biases': tf.Variable(tf.random_normal([self.n_nodes_hl2], 0, 0.1))}
+
+        output_layer = {'weights': tf.Variable(tf.random_normal([self.n_nodes_hl1, self.n_nodes_output], 0, 0.1)),
+                          'biases': tf.Variable(tf.random_normal([self.n_nodes_output], 0, 0.1))}
+
+        l1 = tf.add(tf.matmul(data, hidden_1_layer['weights']), hidden_1_layer['biases'])
+        l1 = tf.nn.relu(l1)
+
+        l2 = tf.add(tf.matmul(l1, hidden_2_layer['weights']), hidden_2_layer['biases'])
+        l2 = tf.nn.relu(l2)
+
+        #l3 = tf.add(tf.matmul(l2, hidden_3_layer['weights']), hidden_3_layer['biases'])
+        #l3 = tf.nn.relu(l3)
+
+        output = tf.matmul(l2, output_layer['weights']) + output_layer['biases']
+
+        return output
+
+
+    def train_neural_network(self, x):
+        prediction = self.neural_network_model(x)
+
+        #Maybe change?
+        cost = tf.reduce_mean(tf.squared_difference(prediction, self.y))
+
+        #   Learning rate = 0.001
+        optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate).minimize(cost)
+
+        #Cycles feed forward + backprop
+
+
+        with tf.Session() as sess:
+            sess.run(tf.global_variables_initializer())
+
+            for epoch in range (self.hm_epochs):
+                epoch_loss = 0
+                total_batch = int(reading_from_file.get_batch_size_time_series()/ self.batch_size)
+                for _ in range(total_batch):
+                    epoch_x, epoch_y = reading_from_file.get_next_element_time_series(self.batch_size)
+                    epoch_y = list(zip(*epoch_y))
+                    epoch_y = epoch_y[0]
+                    epoch_y = np.asarray(epoch_y).reshape(self.batch_size, 1)
+
+                    _,c = sess.run([optimizer, cost], feed_dict={x: epoch_x, self.y: epoch_y})
+                    epoch_loss += c
+                reading_from_file.reset_counter()
+
+                print ('Epoch', epoch, 'completed out of' , self.hm_epochs, 'average loss', epoch_loss/total_batch)
+
+            test_ouput = reading_from_file.get_test_output_time_series()
+            test_input = reading_from_file.get_test_input_time_series()
+            test_temp = test_input
+            test_out_column = list(zip(*test_ouput))
+            result_mse_arr = []
+
+            for i in range(0, 5):
+                pred1 = prediction.eval({x: test_temp})
+                columns = list(zip(*test_temp))
+                columns.append(pred1)
+                columns.pop(0)
+                test_temp = list(zip(*columns))
+                result_mse = mean_squared_error(pred1, test_out_column[i], multioutput='raw_values')[0]
+                result_mse_arr.append(result_mse)
+
+            return result_mse_arr
+
+    def run(self):
+       result = self.train_neural_network(self.x)
+       return result

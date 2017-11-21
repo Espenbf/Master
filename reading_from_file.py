@@ -81,9 +81,6 @@ def read_from_file_time_series3(file_name, window_size_input, window_size_output
     with open(file_name) as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')
         next(spamreader)
-        next(spamreader)
-        next(spamreader)
-        next(spamreader)
 
         initial_counter = 0
         counter = 0
@@ -126,8 +123,9 @@ def read_from_file_time_series(window_size_input, window_size_output):
 
 
 def read_from_file_time_series_norwegian(window_size_input, window_size_output):
-    #read_from_file_time_series3('test_files/Aasen_II.csv', window_size_input, window_size_output)
-    read_from_file_time_series3('test_files/Andoya.csv', window_size_input, window_size_output)
+    read_from_file_time_series3('test_files/Aasen_II.csv', window_size_input, window_size_output)
+    #read_from_file_time_series3('test_files/Raggovidda.csv', window_size_input, window_size_output)
+    #read_from_file_time_series3('test_files/Bessakerfjellet.csv', window_size_input, window_size_output)
 
 ws2 = ws[::2].copy()
 deg2 = deg[::2].copy()
@@ -208,7 +206,7 @@ def get_train_output_time_series():
 
 
 def get_test_data_size_time_series():
-    return len(time_series_power_output_test)
+    return len(time_series_power_output_train)
 
 
 def get_test_input2():

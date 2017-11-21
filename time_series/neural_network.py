@@ -22,11 +22,11 @@ class NN:
         self.n_nodes_output = nr_out
         self.x = tf.placeholder('float', [None, nr_inp])
         self.y = tf.placeholder('float', [None, nr_out])
-        #reading_from_file.read_from_file_time_series(self.n_nodes_input, self.n_nodes_output)
         reading_from_file.read_from_file_time_series_norwegian(self.n_nodes_input, self.n_nodes_output)
         reading_from_file.normalize_time_series()
 
         self.batch_size = reading_from_file.get_test_data_size_time_series()
+        self.batch_size = 1000
 
     learning_rate = 0.01
     n_nodes_hl1 = 2000
@@ -34,7 +34,7 @@ class NN:
     n_nodes_hl3 = 2000
 
 
-    hm_epochs = 15
+    hm_epochs = 5
 
 
 
@@ -65,7 +65,6 @@ class NN:
         output = tf.matmul(l2, output_layer['weights']) + output_layer['biases']
 
         return output
-
 
     def train_neural_network(self, x):
         prediction = self.neural_network_model(x)

@@ -12,6 +12,6 @@ def knn_new(input_data, output_data, test_inp, test_out, n):
         y_= knn.fit(input_data, output_data).predict(test_inp)
         result = mean_squared_error(y_, test_out, multioutput='raw_values')
         print(result)
-        return result
+    return result
 
 
